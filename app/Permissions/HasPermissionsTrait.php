@@ -3,9 +3,55 @@
 namespace App\Permissions;
 
 use App\{Role, Permission};
+use Illuminate\Support\Arr;
 
 trait HasPermissionsTrait
 {
+    /**
+     * Give a permission to a user
+     *
+     * @return array
+     */
+    public function givePermissionTo(...$permissions)
+    {
+        $permissions = $this->getAllPermissions(Arr::flatten($permissions));
+
+        if ($permissions === null)
+        {
+            return $this;
+        }
+
+        $this->permissions()->saveMany($permissions);
+
+        return $this;
+    }
+
+    /**
+     * Revoke a permission to a user
+     *
+     * @return array
+     */
+    public function revokePermissionTo(...$permissions)
+    {
+        $permissions = $this->getAllPermissions(Arr::flatten($permissions));
+
+        $this->permissions()->detach($permissions);
+
+        return $this;
+    }
+
+    /**
+     * Update user permissions
+     *
+     * @return array
+     */
+    public function updatePermissions(...$permissions)
+    {
+        $this->permissions()->detach();
+
+        return $this->givePermissionTo($permissions);
+    }
+
     /**
      * Check if the user has a specified role
      *
@@ -31,7 +77,7 @@ trait HasPermissionsTrait
      */
     public function hasPermissionTo($permission)
     {
-        return $this->hasPermission($permission);
+        return $this->hasPermissionThroughRole($permission) || $this->hasPermission($permission);
     }
 
     /**
@@ -42,6 +88,34 @@ trait HasPermissionsTrait
     protected function hasPermission($permission)
     {
         return (bool) $this->permissions->where('name', $permission->name)->count();
+    }
+
+    /**
+     * Check if the user has a permission through a role he is assigned
+     *
+     * @return bool
+     */
+    protected function hasPermissionThroughRole($permission)
+    {
+        foreach ($permission->roles as $role)
+        {
+            if ($this->roles->contains($role))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Get all permissions from storage
+     *
+     * @return bool
+     */
+    protected function getAllPermissions(array $permissions)
+    {
+        return Permission::whereIn('name', $permissions)->get();
     }
 
     /**
