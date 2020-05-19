@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Permission extends Model
 {
     /**
-     * Setup relationship between role and premission
+     * Setup relationship between permission and roles
      *
      * @var array
      */
