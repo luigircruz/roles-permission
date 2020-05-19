@@ -9,7 +9,7 @@ trait HasPermissionsTrait
     /**
      * Check if the user has a specified role
      *
-     * @var bool
+     * @return bool
      */
     public function hasRole(...$roles)
     {
@@ -25,9 +25,29 @@ trait HasPermissionsTrait
     }
 
     /**
+     * Check if the user has a permission
+     *
+     * @return bool
+     */
+    public function hasPermissionTo($permission)
+    {
+        return $this->hasPermission($permission);
+    }
+
+    /**
+     * Check if a permission record exists within a user
+     *
+     * @return bool
+     */
+    protected function hasPermission($permission)
+    {
+        return (bool) $this->permissions->where('name', $permission->name)->count();
+    }
+
+    /**
      * Setup relationship between user and its roles
      *
-     * @var array
+     * @return array
      */
     public function roles()
     {
@@ -37,10 +57,10 @@ trait HasPermissionsTrait
     /**
      * Setup relationship between user and its permissions
      *
-     * @var array
+     * @return array
      */
     public function permissions()
     {
-        return $this->belongsToMany(Permission::class, 'users_roles');
+        return $this->belongsToMany(Permission::class, 'users_permissions');
     }
 }

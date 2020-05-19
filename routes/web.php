@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function (Illuminate\Http\Request $request) {
     $user = $request->user();
 
-    dd($user->hasRole('user'));
+    dd($user->can('delete user'));
 });
 
 Auth::routes();
