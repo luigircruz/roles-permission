@@ -15,6 +15,13 @@
                     @endif
 
                     You are logged in!
+                    @can('edit ticket')
+                        <a href="">Edit ticket</a>
+                    @endcan
+                    
+                    @can('add user')
+                        <a href="">Add user</a>
+                    @endcan
                 </div>
             </div>
         </div>

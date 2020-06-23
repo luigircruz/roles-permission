@@ -14,9 +14,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function (Illuminate\Http\Request $request) {
-    $user = $request->user();
+    // $user = $request->user();
 
-    $user->updatePermissions(['add ticket', 'edit ticket']);
+    // dd($user->permissions());
+    return view('welcome');
 });
 
 Auth::routes();
