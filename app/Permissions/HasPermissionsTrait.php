@@ -2,13 +2,14 @@
 
 namespace App\Permissions;
 
-use App\{Role, Permission};
+use App\Permission;
+use App\Role;
 use Illuminate\Support\Arr;
 
 trait HasPermissionsTrait
 {
     /**
-     * Give a permission to a user
+     * Give a permission to a user.
      *
      * @return array
      */
@@ -16,8 +17,7 @@ trait HasPermissionsTrait
     {
         $permissions = $this->getAllPermissions(Arr::flatten($permissions));
 
-        if ($permissions === null)
-        {
+        if ($permissions === null) {
             return $this;
         }
 
@@ -27,7 +27,7 @@ trait HasPermissionsTrait
     }
 
     /**
-     * Revoke a permission to a user
+     * Revoke a permission to a user.
      *
      * @return array
      */
@@ -41,7 +41,7 @@ trait HasPermissionsTrait
     }
 
     /**
-     * Update user permissions
+     * Update user permissions.
      *
      * @return array
      */
@@ -53,16 +53,14 @@ trait HasPermissionsTrait
     }
 
     /**
-     * Check if the user has a specified role
+     * Check if the user has a specified role.
      *
      * @return bool
      */
     public function hasRole(...$roles)
     {
-        foreach ($roles as $role)
-        {
-            if ($this->roles->contains('name', strtolower($role)))
-            {
+        foreach ($roles as $role) {
+            if ($this->roles->contains('name', strtolower($role))) {
                 return true;
             }
         }
@@ -71,7 +69,7 @@ trait HasPermissionsTrait
     }
 
     /**
-     * Check if the user has a permission
+     * Check if the user has a permission.
      *
      * @return bool
      */
@@ -81,7 +79,7 @@ trait HasPermissionsTrait
     }
 
     /**
-     * Check if a permission record exists within a user
+     * Check if a permission record exists within a user.
      *
      * @return bool
      */
@@ -91,16 +89,14 @@ trait HasPermissionsTrait
     }
 
     /**
-     * Check if the user has a permission through a role he is assigned
+     * Check if the user has a permission through a role he is assigned.
      *
      * @return bool
      */
     protected function hasPermissionThroughRole($permission)
     {
-        foreach ($permission->roles as $role)
-        {
-            if ($this->roles->contains($role))
-            {
+        foreach ($permission->roles as $role) {
+            if ($this->roles->contains($role)) {
                 return true;
             }
         }
@@ -109,7 +105,7 @@ trait HasPermissionsTrait
     }
 
     /**
-     * Get all permissions from storage
+     * Get all permissions from storage.
      *
      * @return bool
      */
@@ -119,7 +115,7 @@ trait HasPermissionsTrait
     }
 
     /**
-     * Setup relationship between user and its roles
+     * Setup relationship between user and its roles.
      *
      * @return array
      */
@@ -129,7 +125,7 @@ trait HasPermissionsTrait
     }
 
     /**
-     * Setup relationship between user and its permissions
+     * Setup relationship between user and its permissions.
      *
      * @return array
      */
